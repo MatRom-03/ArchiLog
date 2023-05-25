@@ -31,7 +31,7 @@ public class ServiceCours implements IService {
 	
 	private final Socket client;
 
-	ServiceCours(Socket socket) {
+	public ServiceCours(Socket socket) {
 		this.client = socket;
 	}
 

@@ -74,10 +74,6 @@ public class ServiceCours implements IService {
 		}
 	}
 
-	protected void finalize() throws Throwable {
-		client.close();
-	}
-
 	@Override
 	public String toString() {
 		return "Inversion de texte";

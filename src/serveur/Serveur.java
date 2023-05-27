@@ -35,12 +35,4 @@ public class Serveur implements Runnable {
 			throw new RuntimeException(e);
 		}
 	}
-
-	// restituer les ressources --> finalize
-	protected void finalize() throws Throwable {
-		try {
-			this.listen_socket.close();
-		} catch (IOException e1) {
-		}
-	}
 }

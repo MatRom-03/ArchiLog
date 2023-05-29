@@ -1,4 +1,4 @@
-package client;
+package applisClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,13 +10,11 @@ import java.net.Socket;
  
 */
 
-public class AppliClient {
+public class BookingCustomerApp {
 	private final static int PORTBOOKING = 1000;
-	private final static int PORTLOAN	 = 1001;
-	private final static int PORTRETURN = 1002;
-		private static String HOST = "localhost"; 
+	private final static String HOST = "localhost";
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		BufferedReader clavier = new BufferedReader(new InputStreamReader(System.in));			
 		
 		Socket socket = null;		
@@ -28,13 +26,20 @@ public class AppliClient {
 			System.out.println("Connecte au serveur " + socket.getInetAddress() + ":"+ socket.getPort());
 
 			String line;
-			line = sin.readLine(); // 1ere question
-			System.out.println(line);
+			line = sin.readLine();
+			int numLines = Integer.parseInt(line);
+
+			for (int i = 0; i < numLines + 2; i++) { // +2 for the 2 next lines
+				line = sin.readLine();
+				System.out.println(line);
+			}
+
+			// TODO: check if the input is a number
 			// prompt d'invite a la saisie
 			System.out.print("->");
 			line = clavier.readLine();
 			sout.println(line);
-			line = sin.readLine(); // 2eme question
+			line = sin.readLine(); // second question
 			System.out.println(line);
 			// prompt d'invite a la saisie
 			System.out.print("->");
@@ -48,7 +53,7 @@ public class AppliClient {
 		catch (IOException e) { System.err.println("Fin du service"); }
 		// Refermer dans tous les cas la socket
 		try { if (socket != null) socket.close(); } 
-		catch (IOException e2) { ; }		
+		catch (IOException e2) { }
 	}
 
 	private static boolean isNumeric(String string) {

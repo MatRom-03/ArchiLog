@@ -18,6 +18,6 @@ C'est un projet purement éducatif fait par des élèves de l'IUT de paris rives
 - Pour lancer l'application serveur, il faut lancer le fichier `Application.java` dans le dossier `src/appliServer`.
 
 #### Lancement des clients :
-- Pour lancer le client de reservation, il faut lancer le fichier `BookingCustomerApp.java` dans le dossier `src/applisClient`.
-- Pour lancer le client d'emprunt, il faut lancer le fichier `LoaningCustomerApp.java` dans le dossier `src/applisClient`.
-- Pour lancer le client de retour, il faut lancer le fichier `ReturningCustomerApp.java` dans le dossier `src/applisClient`.
+- Pour lancer le client de reservation, il faut lancer le fichier `Bttp.java` dans le dossier `src/applisClient` avec les 2 arguments suivant :
+  - l'adresse IP du serveur (ex: 127.0.0.1 ou localhost)
+  - le port du service (1000 -> réservations; 1001 -> emprunts; 1002 -> retours)

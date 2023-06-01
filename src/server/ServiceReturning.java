@@ -9,11 +9,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
 
-// ce service envoie les questions au client
-// on pourrait lors du premier envoi lister les cours ou il reste de la place
-// mais il faudrait coder les \n en ##
-// (et decoder du cote client)
-
 public class ServiceReturning implements IService {
 
 // **** ressources partagees : les Documents **************
@@ -49,7 +44,8 @@ public class ServiceReturning implements IService {
 			out.println("Tapez le numero du document souhaitees"); // first question
 			int numeroDocument = Integer.parseInt(in.readLine());
 
-			System.out.println("Requete de " + this.client.getInetAddress() + " Numero document : " + numeroDocument);
+			System.out.println("=========================================");
+			System.out.println("Requete de " + this.client.getLocalSocketAddress() + " Numero document : " + numeroDocument);
 
 			if (media_library.documentNotExist(numeroDocument)) {
 				System.out.println("Le document n'existe pas");
@@ -62,7 +58,7 @@ public class ServiceReturning implements IService {
 			try {
 				media_library.retour(numeroDocument);
 				System.out.println("Retour reussie");
-				out.println("Retour reussie");
+				out.println("Retour reussi");
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}

@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class Subscriber {
+public class Abonne {
     private final int numero;
     private final String name;
     private final Date dateOfBirth;
@@ -16,7 +16,7 @@ public class Subscriber {
      * @param name the subscriber name
      * @param dateOfBirth the subscriber date of birth
      */
-    public Subscriber(int numero, String name, Date dateOfBirth) {
+    public Abonne(int numero, String name, Date dateOfBirth) {
         this.numero = numero;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -54,7 +54,7 @@ public class Subscriber {
      * @param ab the subscriber
      * @return age
      */
-    private static int calculAge(Subscriber ab) {
+    private static int calculAge(Abonne ab) {
         LocalDate currentDate = LocalDate.now();
         LocalDate birthDate = ab.dateOfBirth.toLocalDate();
         Period period = Period.between(birthDate, currentDate);

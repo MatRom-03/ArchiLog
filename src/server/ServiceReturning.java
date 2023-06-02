@@ -10,20 +10,6 @@ import java.net.Socket;
 import java.sql.SQLException;
 
 public class ServiceReturning implements IService {
-
-// **** ressources partagees : les Documents **************
-	private static Media_library media_library = null;
-
-	/**
-	 * Set the media library
-	 * @param media_library the media library to set
-	 */
-	public static void setDocument(Media_library media_library) {
-		ServiceReturning.media_library = media_library;
-	}
-
-// ********************************************************
-
 	private final Socket client;
 
 	/**
@@ -40,23 +26,30 @@ public class ServiceReturning implements IService {
 			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			PrintWriter out = new PrintWriter(client.getOutputStream(), true);
 
+			// envoi du nombre de ligne du catalogue
+			out.println(0);
+
 			out.println("Bienvenue dans la bibliotheque, vous etes connecte au serveur de retour");
 			out.println("Tapez le numero du document souhaitees"); // first question
 			int numeroDocument = Integer.parseInt(in.readLine());
 
 			System.out.println("=========================================");
-			System.out.println("Requete de " + this.client.getLocalSocketAddress() + " Numero document : " + numeroDocument);
+			System.out.println("Requete de " + this.client.getLocalSocketAddress());
 
-			if (media_library.documentNotExist(numeroDocument)) {
-				System.out.println("Le document n'existe pas");
+			if (Media_library.documentNotExist(numeroDocument)) {
+				System.err.println("Le document n'existe pas");
 				out.println("Le document n'existe pas");
 				return;
 			}
 
-
+			if(Media_library.isNotBorrowed(numeroDocument)) {
+				System.err.println("Le document n'a pas été emprunté");
+				out.println("Le document n'a pas été emprunté");
+				return;
+			}
 
 			try {
-				media_library.retour(numeroDocument);
+				Media_library.retour(numeroDocument);
 				System.out.println("Retour reussie");
 				out.println("Retour reussi");
 			} catch (SQLException e) {

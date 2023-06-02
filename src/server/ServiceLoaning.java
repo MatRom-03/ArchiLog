@@ -12,20 +12,6 @@ import java.net.Socket;
 import java.sql.SQLException;
 
 public class ServiceLoaning implements IService {
-
-// **** ressources partagees : les Documents **************
-	private static Media_library media_library = null;
-
-	/**
-	 * Set the media library
-	 * @param media_library the media library to set
-	 */
-	public static void setDocument(Media_library media_library) {
-		ServiceLoaning.media_library = media_library;
-	}
-
-// ********************************************************
-
 	private final Socket client;
 
 	/**
@@ -43,9 +29,10 @@ public class ServiceLoaning implements IService {
 			PrintWriter out = new PrintWriter(client.getOutputStream(), true);
 
 			// envoi du nombre de ligne du catalogue
-			out.println(media_library.getNbLignesCatalogue());
+			out.println(Media_library.getNbLignesCatalogue());
 			// envoi du catalogue
-			out.println(media_library.getCatalogue());
+			out.println(Media_library.getCatalogue());
+
 			out.println("Bienvenue dans la bibliotheque, vous etes connecte au serveur d'emprunt");
 			out.println("Tapez le numero du document souhaitees"); // first question
 			int numeroDocument = Integer.parseInt(in.readLine());
@@ -53,29 +40,27 @@ public class ServiceLoaning implements IService {
 			int numeroAbonne = Integer.parseInt(in.readLine());
 
 			System.out.println("=========================================");
-			System.out.println("Requete de " + this.client.getLocalSocketAddress() + " Numero document : " + numeroDocument + " Numero abonne : " + numeroAbonne);
+			System.out.println("Requete de " + this.client.getLocalSocketAddress());
 
-			if (media_library.abonneNotExist(numeroAbonne)) {
-				System.out.println("L'abonne n'existe pas");
+			if (Media_library.abonneNotExist(numeroAbonne)) {
+				System.err.println("L'abonne n'existe pas");
 				out.println("L'abonne n'existe pas");
 				return;
 			}
-			if (media_library.documentNotExist(numeroDocument)) {
-				System.out.println("Le document n'existe pas");
+			if (Media_library.documentNotExist(numeroDocument)) {
+				System.err.println("Le document n'existe pas");
 				out.println("Le document n'existe pas");
 				return;
 			}
 
-
-
 			try {
-				media_library.emprunt(numeroDocument, numeroAbonne);
+				Media_library.emprunt(numeroDocument, numeroAbonne);
 				System.out.println("Emprunt reussie");
 				out.println("Emprunt reussie");
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			} catch (DocumentNotAvailableException | SubscriberTooYoungException e) {
-				System.out.println(e.toString());
+				System.err.println(e.toString());
 				out.println(e.toString());
 			}
 

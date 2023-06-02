@@ -13,20 +13,6 @@ import java.sql.SQLException;
 
 
 public class ServiceBooking implements IService {
-
-// **** ressources partagees : les Documents **************
-	private static Media_library media_library = null;
-
-	/**
-	 * Set the media library
-	 * @param media_library the media library to set
-	 */
-	public static void setDocument(Media_library media_library) {
-		ServiceBooking.media_library = media_library;
-	}
-
-// ********************************************************
-
 	private final Socket client;
 
 	/**
@@ -44,9 +30,10 @@ public class ServiceBooking implements IService {
 			PrintWriter out = new PrintWriter(client.getOutputStream(), true);
 
 			// envoi du nombre de ligne du catalogue
-			out.println(media_library.getNbLignesCatalogue());
+			out.println(Media_library.getNbLignesCatalogue());
 			// envoi du catalogue
-			out.println(media_library.getCatalogue());
+			out.println(Media_library.getCatalogue());
+
 			out.println("Bienvenue dans la bibliotheque, vous etes connecte au serveur de reservation");
 			out.println("Tapez le numero du document souhaitees"); // first question
 			int numeroDocument = Integer.parseInt(in.readLine());
@@ -54,23 +41,21 @@ public class ServiceBooking implements IService {
 			int numeroAbonne = Integer.parseInt(in.readLine());
 
 			System.out.println("=========================================");
-			System.out.println("Requete de " + this.client.getLocalSocketAddress() + " Numero document : " + numeroDocument + " Numero abonne : " + numeroAbonne);
+			System.out.println("Requete de " + this.client.getLocalSocketAddress());
 
-			if (media_library.documentNotExist(numeroDocument)) {
+			if (Media_library.documentNotExist(numeroDocument)) {
 				System.err.println("Le document " + numeroDocument + " n'existe pas dans la mediatheque");
 				out.println("Le document n'existe pas dans la mediatheque");
 				return;
 			}
-			if (media_library.abonneNotExist(numeroAbonne)) {
+			if (Media_library.abonneNotExist(numeroAbonne)) {
 				System.err.println("L'abonne " + numeroAbonne + " n'existe pas");
 				out.println("L'abonne n'existe pas");
 				return;
 			}
 
-
-
 			try {
-				media_library.reservation(numeroDocument, numeroAbonne);
+				Media_library.reservation(numeroDocument, numeroAbonne);
 				System.out.println("Reservation reussie");
 				out.println("Reservation reussie");
 			} catch (SQLException e) {

@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Bttp {
+public class ApplicationCustomer {
 
 	private final static int PORTBOOKING 	= 1000;
 	private final static int PORTLOANING	= 1001;
@@ -26,76 +26,58 @@ public class Bttp {
 
 			String line;
 
+			line = sin.readLine();
+			int numLines = Integer.parseInt(line);
+
+			for (int i = 0; i < numLines + 2; i++) { // numLignes of the catalog and 2 others for the next 2 messages
+				line = sin.readLine();
+				System.out.println(line);
+			}
+
 			if (PORT==PORTBOOKING)
 			{
-				line = sin.readLine();
-				int numLines = Integer.parseInt(line);
-
-				for (int i = 0; i < numLines + 2; i++) { // +2 for the 2 next lines
-					line = sin.readLine();
-					System.out.println(line);
-				}
-
-				// prompt d'invite a la saisie
-				System.out.print("->");
+				System.out.print("->"); // first answer
 				line = clavier.readLine();
 				line = checkInput(line, clavier);
 				sout.println(line);
 
 				line = sin.readLine(); // second question
 				System.out.println(line);
-				// prompt d'invite a la saisie
 				System.out.print("->");
 				line = clavier.readLine();
 				line = checkInput(line, clavier);
 				sout.println(line);
 				
-				System.out.println(sin.readLine()); // reponse finale
+				System.out.println(sin.readLine()); // final answer
 		
 				socket.close();
 			}
 			else if (PORT==PORTLOANING)
 			{
-				line = sin.readLine();
-				int numLines = Integer.parseInt(line);
-
-				for (int i = 0; i < numLines + 2; i++) { // +2 for the 2 next lines
-					line = sin.readLine();
-					System.out.println(line);
-				}
-
-				// prompt d'invite a la saisie
-				System.out.print("->");
+				System.out.print("->"); // first answer
 				line = clavier.readLine();
 				line = checkInput(line, clavier);
 				sout.println(line);
 
 				line = sin.readLine(); // second question
 				System.out.println(line);
-				// prompt d'invite a la saisie
 				System.out.print("->");
 				line = clavier.readLine();
 				line = checkInput(line, clavier);
 				sout.println(line);
 				
-				System.out.println(sin.readLine()); // reponse finale
+				System.out.println(sin.readLine()); // final answer
 		
 				socket.close();
 			}
 			else if (PORT==PORTRETURNING)
 			{
-				for (int i = 0; i < 2; i++) {
-					line = sin.readLine();
-					System.out.println(line);
-				}
-
-				// prompt d'invite a la saisie
-				System.out.print("->");
+				System.out.print("->"); // first answer
 				line = clavier.readLine();
 				line = checkInput(line, clavier);
 				sout.println(line);
 
-				System.out.println(sin.readLine()); // reponse finale
+				System.out.println(sin.readLine()); // final answer
 
 				socket.close();
 			}
@@ -108,7 +90,7 @@ public class Bttp {
 
 	private static String checkInput(String line, BufferedReader clavier) throws IOException {
 		while (!isNumeric(line)) {
-			System.out.println("Veuillez entrer un nombre !");
+			System.out.println("Veuillez entrer un numéro de document valide !");
 			System.out.print("->");
 			line = clavier.readLine();
 		}

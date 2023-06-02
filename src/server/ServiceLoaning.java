@@ -11,11 +11,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
 
-// ce service envoie les questions au client
-// on pourrait lors du premier envoi lister les cours ou il reste de la place
-// mais il faudrait coder les \n en ##
-// (et decoder du cote client)
-
 public class ServiceLoaning implements IService {
 
 // **** ressources partagees : les Documents **************
@@ -57,7 +52,8 @@ public class ServiceLoaning implements IService {
 			out.println("Tapez votre numero d'abonne"); // second question
 			int numeroAbonne = Integer.parseInt(in.readLine());
 
-			System.out.println("Requete de " + this.client.getInetAddress() + " Numero document : " + numeroDocument + " Numero abonne : " + numeroAbonne);
+			System.out.println("=========================================");
+			System.out.println("Requete de " + this.client.getLocalSocketAddress() + " Numero document : " + numeroDocument + " Numero abonne : " + numeroAbonne);
 
 			if (media_library.abonneNotExist(numeroAbonne)) {
 				System.out.println("L'abonne n'existe pas");

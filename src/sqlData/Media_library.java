@@ -6,6 +6,7 @@ import documents.DVD;
 import documents.Document;
 import subscribers.SubscriberTooYoungException;
 
+import java.nio.file.FileSystems;
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class Media_library {
     private static final int AGE_MINIMUM = 16;
     private Map<Integer, Subscriber> abonnesMap = new HashMap<>();
     private Map<Integer, Document> documentsMap = new HashMap<>();
-    private final String url = "jdbc:sqlite:C:\\Users\\matte\\IdeaProjects\\ArchiLog\\src\\sqlData\\Data.db";
+    private final String pathDatabase = "jdbc:sqlite:"+ FileSystems.getDefault().getPath("src/sqlData/Data.db").normalize().toAbsolutePath().toString();
 
     /**
      * Constructor of the class, it will get all the data from the database.
@@ -30,7 +31,7 @@ public class Media_library {
      * @throws SQLException if the database is not found
      */
     private void getDataFromFile() throws SQLException {
-        Connection connection = DriverManager.getConnection(this.url);
+        Connection connection = DriverManager.getConnection(this.pathDatabase);
 
         Statement statement = connection.createStatement();
 
@@ -66,6 +67,7 @@ public class Media_library {
         System.out.println("=========================================");
         System.out.println("Table DVD :");
         this.documentsMap.forEach((k, v) -> System.out.println("Key : " + k + " Value : " + v));
+        System.out.println("=========================================");
     }
 
     /**
@@ -73,11 +75,9 @@ public class Media_library {
      * @return the Connection object
      */
     private Connection connect() {
-        // SQLite's connection string
-        String url = this.url;
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url);
+            conn = DriverManager.getConnection(this.pathDatabase);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -174,7 +174,6 @@ public class Media_library {
         document.reservation(subscriber);
         updateDVD(numeroDocument, document.empruntePar(), document.reservePar(), document.getReservationTime());
 
-        System.out.println("=========================================");
         System.out.println("Reservation du document " + numeroDocument + " par l'abonne " + numeroAbonne);
         this.documentsMap.forEach((k, v) -> System.out.println("Key : " + k + " Value : " + v));
     }
@@ -199,7 +198,6 @@ public class Media_library {
         document.emprunt(subscriber);
         updateDVD(numeroDocument, document.empruntePar(), document.reservePar(), document.getReservationTime());
 
-        System.out.println("=========================================");
         System.out.println("Emprunt du document " + numeroDocument + " par l'abonne " + numeroAbonne);
         this.documentsMap.forEach((k, v) -> System.out.println("Key : " + k + " Value : " + v));
     }
@@ -216,7 +214,6 @@ public class Media_library {
         document.retour();
         updateDVD(numeroDocument, document.empruntePar(), document.reservePar(), document.getReservationTime());
 
-        System.out.println("=========================================");
         System.out.println("Retour du document " + numeroDocument);
         this.documentsMap.forEach((k, v) -> System.out.println("Key : " + k + " Value : " + v));
     }

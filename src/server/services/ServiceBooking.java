@@ -2,7 +2,7 @@ package server.services;
 
 import documents.exceptions.DocumentAlreadyBookedException;
 import documents.exceptions.DocumentAlreadyBorrowedException;
-import documents.GrandChamanException;
+import documents.exceptions.GrandChamanException;
 import protocols.Reader;
 import protocols.Writer;
 import server.log.LogError;

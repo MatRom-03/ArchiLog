@@ -2,6 +2,7 @@ package documents;
 
 import documents.exceptions.DocumentAlreadyBookedException;
 import documents.exceptions.DocumentAlreadyBorrowedException;
+import documents.exceptions.GrandChamanException;
 import server.logic.Media_library;
 import subscribers.Abonne;
 

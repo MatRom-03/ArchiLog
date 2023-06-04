@@ -2,7 +2,7 @@ package subscribers;
 
 import java.io.Serial;
 
-public class SubscriberTooYoungException extends Exception {
+public class SubscriberTooYoungException extends RuntimeException {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -13,7 +13,7 @@ public class SubscriberTooYoungException extends Exception {
 
 	@Override
 	public String toString() {
-		return "vous n’avez pas l’âge pour emprunter ce DVD";
+		return "Vous n’avez pas l’âge pour emprunter ce DVD";
 	}
 
 }

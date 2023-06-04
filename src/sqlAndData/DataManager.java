@@ -1,19 +1,20 @@
-package sqlData;
+package sqlAndData;
 
 import documents.DVD;
-import documents.DocumentModel;
+import documents.AbstractDocument;
+import documents.DocumentStates;
+import server.log.Log;
 import subscribers.Abonne;
 
 import java.nio.file.FileSystems;
 import java.sql.*;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DataManager {
-    private static final String pathDatabase = "jdbc:sqlite:"+ FileSystems.getDefault().getPath("src/sqlData/Data.db").normalize().toAbsolutePath().toString();
+    private static final String pathDatabase = "jdbc:sqlite:"+ FileSystems.getDefault().getPath("src/sqlAndData/Data.db").normalize().toAbsolutePath().toString();
     public static Map<Integer, Abonne> abonnesMap = new HashMap<>();
-    public static Map<Integer, DocumentModel> documentsMap = new HashMap<>();
+    public static Map<Integer, AbstractDocument> documentsMap = new HashMap<>();
 
     /**
      * Retreve all the data from the database
@@ -44,19 +45,11 @@ public class DataManager {
             boolean adulte = resultSetDVD.getBoolean("adulte");
             int empruntePar = resultSetDVD.getInt("empruntePar");
             int reservePar = resultSetDVD.getInt("reservePar");
-            LocalTime reservationTime = resultSetDVD.getTime("reservationTime").toLocalTime();
+            Timestamp reservationTimeStamp = resultSetDVD.getTimestamp("reservationTimeStamp");
+            DocumentStates state = DocumentStates.fromString(resultSetDVD.getString("state"));
 
-            documentsMap.put(numeroDVD, new DVD(numeroDVD, titre, abonnesMap.get(empruntePar), abonnesMap.get(reservePar), reservationTime, adulte));
+            documentsMap.put(numeroDVD, new DVD(numeroDVD, titre, abonnesMap.get(empruntePar), abonnesMap.get(reservePar), reservationTimeStamp, state,adulte));
         }
-
-        // TODO: remove this for the final version
-        System.out.println("=========================================");
-        System.out.println("Table Abonnes :");
-        abonnesMap.forEach((k, v) -> System.out.println("Key : " + k + " Value : " + v));
-        System.out.println("=========================================");
-        System.out.println("Table DVD :");
-        documentsMap.forEach((k, v) -> System.out.println("Key : " + k + " Value : " + v));
-        System.out.println("=========================================");
     }
 
     /**
@@ -78,13 +71,13 @@ public class DataManager {
      * @param numero the document number
      * @param empruntePar the subscriber who borrowed the document
      * @param reservePar the subscriber who reserved the document
-     * @param reservationTime the time when the document was reserved
+     * @param reservationTimeStamp the Timestamp when the document was reserved
      */
-    public static void updateDVD(int numero, Abonne empruntePar, Abonne reservePar, LocalTime reservationTime) {
-        // TODO : update the database with the new data forma : DocumentModel
+    public static void updateDVD(int numero, Abonne empruntePar, Abonne reservePar, Timestamp reservationTimeStamp, DocumentStates state) {
         String sql = "UPDATE DVD SET empruntePar = ? , "
                 + "reservePar = ? , "
-                + "reservationTime = ? "
+                + "reservationTimeStamp = ? ,"
+                + "state = ? "
                 + "WHERE numero = ?";
 
         ResultSet rs = null;
@@ -110,8 +103,9 @@ public class DataManager {
                 pstmt.setNull(2, Types.INTEGER);
             else
                 pstmt.setInt(2, reservePar.getNumero());
-            pstmt.setTime(3, Time.valueOf(reservationTime));
-            pstmt.setInt(4, numero);
+            pstmt.setTimestamp(3, reservationTimeStamp);
+            pstmt.setString(4, state.toString());
+            pstmt.setInt(5, numero);
 
             //
             pstmt.executeUpdate();
@@ -142,5 +136,25 @@ public class DataManager {
                 System.out.println(e3.getMessage());
             }
         }
+    }
+
+    /**
+     * Insert a new log in the database
+     * @param log the log to insert
+     */
+    public static void insertLog(Log log){
+        String sql = "INSERT INTO Logs(timeStamp, action, numeroAbonne, numeroDocument) VALUES(?,?,?,?)";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setTimestamp(1, log.getTimeStamp());
+            pstmt.setString(2, log.getAction());
+            pstmt.setInt(3, log.getNumeroAbonne());
+            pstmt.setInt(4, log.getNumeroDocument());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

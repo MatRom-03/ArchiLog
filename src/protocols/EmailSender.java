@@ -8,9 +8,9 @@ import java.util.Properties;
 public class EmailSender {
     private static final String SMTP_HOST = "mail.mehdi-ali.me";
     private static final int SMTP_PORT = 587;
-    private static final String USERNAME = "legrandwakantanka@mehdi-ali.me"; //legrandwakantanka@gmail.com
-    private static final String PASSWORD = "@b1t5ib5uhgBzpN4"; //elgr@ndewak@ntank@
-    private static final String TO_EMAIL = "matteo.moisant@gmail.com";
+    private static final String USERNAME = "legrandwakantanka@mehdi-ali.me";
+    private static final String PASSWORD = "@b1t5ib5uhgBzpN4";
+    private static final String TO_EMAIL = "jean-francois.brette@u-paris.fr";
 
     public static void sendEmail(String subject, String message) throws MessagingException {
         System.out.println("Gloire au grand Wakan Tanka BadiiiX pour le serveur SMTP");

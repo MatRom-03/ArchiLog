@@ -7,6 +7,11 @@ import javax.mail.MessagingException;
 import java.util.ArrayList;
 
 public class EmailManager {
+    /**
+     * Send an eamil for all the abonnes in the list
+     * @param abonnes list of abonnes
+     * @param numeroDocument the document number
+     */
     public static void sendEmails(ArrayList<Abonne> abonnes, int numeroDocument) {
 
         if (abonnes.size() == 0) {

@@ -117,18 +117,38 @@ public class Media_library {
         DataManager.insertLog(new Log(Actions.REMOVEBOOKING, 0, numeroDocument, new Timestamp(System.currentTimeMillis())));
     }
 
+    /**
+     * Get the remaining reservation time
+     * @param numeroDocument the document number
+     * @return remaining time
+     */
     public static int getRemainingReservationTime(int numeroDocument) {
         return DataManager.documentsMap.get(numeroDocument).getRemainingReservationTime();
     }
 
+    /**
+     * Get the waiting list for the document
+     * @param numeroDocument the document number
+     * @return list of Abonne
+     */
     public static ArrayList<Abonne> getWaitingList(int numeroDocument) {
         return DataManager.documentsMap.get(numeroDocument).getWaitingList();
     }
 
+    /**
+     * Get the document
+     * @param numeroDocument the document number
+     * @return a document
+     */
     public static AbstractDocument getDocument(int numeroDocument) {
         return DataManager.documentsMap.get(numeroDocument);
     }
 
+    /**
+     * Add an alert for the Abonne in the document
+     * @param numeroDocument the document number
+     * @param numeroAbonne the abonne number
+     */
     public static void addAlert(int numeroDocument, int numeroAbonne) {
         AbstractDocument document = DataManager.documentsMap.get(numeroDocument);
         Abonne abonne = DataManager.abonnesMap.get(numeroAbonne);

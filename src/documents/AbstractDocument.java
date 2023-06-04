@@ -161,7 +161,7 @@ public abstract class AbstractDocument implements Document{
      * at the end of the timer, the reservation is canceled.
      */
     public void setTimer() {
-        this.reservationTimeStamp = Timestamp.valueOf(new Timestamp(System.currentTimeMillis()).toLocalDateTime().plusSeconds(60)); // TODO: replace by 2h
+        this.reservationTimeStamp = Timestamp.valueOf(new Timestamp(System.currentTimeMillis()).toLocalDateTime().plusHours(2));
         timer.schedule(new java.util.TimerTask() {
             @Override
             public void run() {
@@ -169,7 +169,7 @@ public abstract class AbstractDocument implements Document{
                 state = DocumentStates.AVAILABLE;
                 Media_library.removeBooking(numero);
             }
-        }, 60*1000); // TODO: replace delay by 2*60*60*1000
+        }, 2*60*60*1000);
     }
 
     /**

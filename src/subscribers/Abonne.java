@@ -39,6 +39,14 @@ public class Abonne {
         return age;
     }
 
+    /**
+     * Return the subscriber name
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "Abonne{" +

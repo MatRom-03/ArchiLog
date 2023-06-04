@@ -1,7 +1,10 @@
 package appliServer;
 
-import server.*;
-import sqlData.Media_library;
+import server.core.Serveur;
+import server.logic.Media_library;
+import server.services.ServiceBooking;
+import server.services.ServiceLoaning;
+import server.services.ServiceReturning;
 
 class Application {
 	private final static int PORTBOOKING = 1000;

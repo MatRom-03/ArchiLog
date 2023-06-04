@@ -1,4 +1,6 @@
-package server;
+package server.core;
+
+import server.services.IService;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
